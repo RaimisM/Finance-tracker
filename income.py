@@ -10,13 +10,14 @@ class IncomeTracker:
         with open(self.filename, mode='a', newline='') as file:
             writer = csv.writer(file)
             if file.tell() == 0:
-                writer.writerow(["Category", "Amount", "Description", "Date"])
+                writer.writerow(["ID", "Date", "Category", "Amount", "Description"])
 
     def add_income(self, category, amount, description, date):
+        unique_id = datetime.now().strftime("%Y%m%d%H%M%S")
         current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with open(self.filename, mode='a', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow([category, amount, description, current_date])
+            writer.writerow([unique_id, current_date, category, amount, description])
         print("Income added successfully!")
 
     @staticmethod
