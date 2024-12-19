@@ -7,10 +7,13 @@ class IncomeTracker:
         self._file_manager()
 
     def _file_manager(self):
-        with open(self.filename, mode='a', newline='') as file:
-            writer = csv.writer(file)
-            if file.tell() == 0:
-                writer.writerow(["ID", "Date", "Category", "Amount", "Description"])
+        try:
+            with open(self.filename, mode='a', newline='') as file:
+                writer = csv.writer(file)
+                if file.tell() == 0:
+                    writer.writerow(["ID", "Date", "Category", "Amount", "Description"])
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
     def add_income(self, category, amount, description):
         unique_id = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -56,7 +59,7 @@ def main():
         tracker.add_income(category, amount, description)
 
         while True:
-            answer = input("Do you want to add another income? (yes/y or no/n): ").strip().lower()
+            answer = input("Do you want to add another income? (yes/no): ").strip().lower()
             if answer in ["yes", "y"]:
                 break
             elif answer in ["no", "n"]:
