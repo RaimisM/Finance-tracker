@@ -12,20 +12,17 @@ class IncomeTracker:
             if file.tell() == 0:
                 writer.writerow(["ID", "Date", "Category", "Amount", "Description"])
 
-    def add_income(self, category, amount, description, date):
+    def add_income(self, category, amount, description):
         unique_id = datetime.now().strftime("%Y%m%d%H%M%S")
         current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        with open(self.filename, mode='a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([unique_id, current_date, category, amount, description])
-        print("Income added successfully!")
-        print("Do you want to add another income? (yes/no)")
-        answer = input().strip().lower()
-        if answer == "yes":
-            main()
-        else:
-            print("Goodbye!")
-            return
+        try:
+            with open(self.filename, mode='a', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow([unique_id, current_date, category, amount, description])
+            print("Income added successfully!")
+        except Exception as e:
+            print(f"Error adding income: {e}")
+
 
     @staticmethod
     def get_categories():
@@ -46,21 +43,29 @@ class IncomeTracker:
                 print("Invalid amount. Please try again.")
                 continue
 
-
-        
     @staticmethod
     def get_description():
         return input("Enter description: ").strip()
     
 def main():
     tracker = IncomeTracker()
-    category = tracker.get_categories()
-    amount = tracker.get_amount()
-    if amount is None:
-        return
-    description = tracker.get_description()
-    tracker.add_income(category, amount, description, datetime.now())   
+    while True:
+        category = tracker.get_categories()
+        amount = tracker.get_amount()
+        description = tracker.get_description()
+        tracker.add_income(category, amount, description)
 
+        while True:
+            answer = input("Do you want to add another income? (yes/y or no/n): ").strip().lower()
+            if answer in ["yes", "y"]:
+                break
+            elif answer in ["no", "n"]:
+                print("Thank you for using the Income Tracker. Goodbye!")
+                return
+            else:
+                print("Invalid input. Please type 'yes', 'y', 'no', or 'n'.")
+
+        
 if __name__ == "__main__":
     main()
 
