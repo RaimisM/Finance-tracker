@@ -19,6 +19,13 @@ class IncomeTracker:
             writer = csv.writer(file)
             writer.writerow([unique_id, current_date, category, amount, description])
         print("Income added successfully!")
+        print("Do you want to add another income? (yes/no)")
+        answer = input().strip().lower()
+        if answer == "yes":
+            main()
+        else:
+            print("Goodbye!")
+            return
 
     @staticmethod
     def get_categories():
@@ -29,12 +36,17 @@ class IncomeTracker:
     
     @staticmethod
     def get_amount():
-        try:
-            amount = float(input("Enter amount: "))
-            return amount
-        except ValueError:
-            print("Invalid amount. Please try again.")
-            return None
+        while True:
+            try:
+                amount = float(input("Enter amount: "))
+                while amount <= 0:
+                    amount = float(input("Invalid amount. Please try again: "))
+                return amount
+            except ValueError:
+                print("Invalid amount. Please try again.")
+                continue
+
+
         
     @staticmethod
     def get_description():
