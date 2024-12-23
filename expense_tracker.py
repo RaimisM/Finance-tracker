@@ -41,24 +41,9 @@ class ExpenseTracker:
                 print("Invalid category. Please try again.")
 
    
-def main():
-    tracker = ExpenseTracker()
-    while True:
-        category = tracker.expense_categories()
-        amount = tracker.file_manager.get_amount()
-        description = tracker.file_manager.get_description()
-        tracker.file_manager.add_transaction("Expense", category, amount, description)
-
-        while True:
-            another_expense = input("Do you want to add another expense? (yes/no): ").strip().lower()
-            if another_expense in ["yes", "y"]:
-                break
-            elif another_expense in ["no", "n"]:
-                print("Goodbye!")
-                return
-            else:
-                print("Invalid input. Please type 'yes', 'y', 'no', or 'n'.")
-
-
-if __name__ == "__main__":
-    main()
+def add_expense(self):
+        category = self.expense_categories()
+        amount = self.file_manager.get_amount()
+        description = self.file_manager.get_description()
+        self.file_manager.add_transaction("Expense", category, amount, description)
+        print("Expense added successfully!")

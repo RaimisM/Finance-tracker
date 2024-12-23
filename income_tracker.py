@@ -9,33 +9,19 @@ class IncomeTracker:
     @staticmethod
     def income_categories():
         valid_categories = ["salary", "gift", "interest", "others"]
-        category = input("Select income category (Salary, Gift, Interest, Others): ").strip().lower()
+        print("Available income categories:", ", ".join(valid_categories))
+        category = input("Select income category: ").strip().capitalize
         while category not in valid_categories:
             category = input("Invalid category. Please try again: ").strip().lower()
-        return category.capitalize()
+        return category
     
 
     
-def main():
-    tracker = IncomeTracker()
-    while True:
-        category = tracker.income_categories()
-        amount = tracker.file_manager.get_amount()
-        description = tracker.file_manager.get_description()
-        tracker.file_manager.add_transaction("Income", category, amount, description)
-
-        while True:
-            answer = input("Do you want to add another income? (yes/no): ").strip().lower()
-            if answer in ["yes", "y"]:
-                break
-            elif answer in ["no", "n"]:
-                print("Thank you for using the Income Tracker. Goodbye!")
-                return
-            else:
-                print("Invalid input. Please select yes or no.")
-
-        
-if __name__ == "__main__":
-    main()
+def add_income(self):
+        category = self.income_categories()
+        amount = self.file_manager.get_amount()
+        description = self.file_manager.get_description()
+        self.file_manager.add_transaction("Income", category, amount, description)
+        print("Income added successfully!")
 
             
