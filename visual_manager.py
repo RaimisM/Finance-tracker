@@ -26,9 +26,78 @@ class VisualManager:
             return self.data[self.data["Date"].dt.month == now.month]
         elif timeframe == "year":
             return self.data[self.data["Date"].dt.year == now.year]
-        return self.data
+        elif timeframe == "all":
+            available_years = self.data["Date"].dt.year.dropna().unique()
+            available_years.sort()
+            print("Available years:", ", ".join(map(str, available_years)))
+            try:
+                selected_year = int(input("Enter the year: ").strip())
+                if selected_year in available_years:
+                    return self.data[self.data["Date"].dt.year == selected_year]
+                else:
+                    print(f"Year {selected_year} is not available.")
+                    return pd.DataFrame()
+            except ValueError:
+                print("Invalid year selection. Please try again.")
+                return pd.DataFrame()
+        else:
+            print("Invalid timeframe selection.")
+            return pd.DataFrame()
 
     def summarize_data(self, data):
-        income = data[data["Type"] == "Income"]["Amount"].sum()
-        expenses = data[data["Type"] == "Expense"]["Amount"].sum()
-        print(f"Total Income: €{income:.2f}, Total Expenses: €{expenses:.2f}, Balance: €{income - expenses:.2f}")
+        if data.empty:
+            print("No transactions available.")
+            return
+        
+        income = data[data["Type"] == "Income"].groupby("Category")["Amount"].sum()
+        expenses = data[data["Type"] == "Expense"].groupby("Category")["Amount"].sum()
+        total_income = income.sum()
+        total_expenses = expenses.sum()
+        balance = total_income - total_expenses
+
+        print("\nSummary:")
+        print("\nIncome by Category:")
+        if not income.empty:
+            for category, amount in income.items():
+                print(f"  {category}: €{amount:.2f}")
+        else:
+            print("  No income recorded.")
+
+        print("\nExpenses by Category:")
+        if not expenses.empty:
+            for category, amount in expenses.items():
+                print(f"  {category}: €{amount:.2f}")
+        else:
+            print("  No expenses recorded.")
+
+        print(f"\nTotal Income: €{total_income:.2f}")
+        print(f"Total Expenses: €{total_expenses:.2f}")
+        print(f"Balance: €{balance:.2f}")
+        print("\n")
+
+    def show_summary(self, timeframe):
+        filtered_data = self.filter_data(timeframe)
+        self.summarize_data(filtered_data)
+
+if __name__ == "__main__":
+    visual_manager = VisualManager()
+
+    while True:
+        print("\nSelect a timeframe:")
+        print("1. This month")
+        print("2. This year")
+        print("3. All time")
+        print("4. Exit")
+
+        choice = input("Enter your choice: ").strip()
+        if choice == "1":
+            visual_manager.show_summary("month")
+        elif choice == "2":
+            visual_manager.show_summary("year")
+        elif choice == "3":
+            visual_manager.show_summary("all")
+        elif choice == "4":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")

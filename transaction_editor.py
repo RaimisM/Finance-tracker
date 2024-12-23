@@ -53,21 +53,21 @@ class TransactionManager:
                 print("Invalid type. Please enter 'Income' or 'Expense'.")
 
         if transaction["Type"] == "Income":
-            print("Available income categories: Salary, Gift, Interest, Others")
+            print("Available income categories: Salary, Gift, Interest, Other")
         else:
-            print("Available expense categories: Food, Transport, Entertainment, Health, Education, Communication, Home, Clothing, Gifts, Travel, Beauty, Pets, Sport, Social, Holidays, Donations, Others")
+            print("Available expense categories: Food, Transport, Entertainment, Health, Education, Communication, Home, Clothing, Gifts, Travel, Beauty, Pets, Sport, Social, Holidays, Donations, Other")
 
         while True:
             new_category = input(f"Enter new category (leave blank to keep current: {transaction['Category']}): ").strip()
             if not new_category:
                 break
 
-            if transaction["Type"] == "Income" and new_category.capitalize() in ["Salary", "Gift", "Interest", "Others"]:
+            if transaction["Type"] == "Income" and new_category.capitalize() in ["Salary", "Gift", "Interest", "Other"]:
                 transaction["Category"] = new_category.capitalize()
                 break
             elif transaction["Type"] == "Expense" and new_category.capitalize() in [
                 "Food", "Transport", "Entertainment", "Health", "Education", "Communication", "Home", "Clothing", "Gifts",
-                "Travel", "Beauty", "Pets", "Sport", "Social", "Holidays", "Donations", "Others"
+                "Travel", "Beauty", "Pets", "Sport", "Social", "Holidays", "Donations", "Other"
             ]:
                 transaction["Category"] = new_category.capitalize()
                 break

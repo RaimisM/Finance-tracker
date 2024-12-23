@@ -24,11 +24,11 @@ class ExpenseTracker:
             "Social": "🎉",
             "Holidays": "🏖️",
             "Donations": "🎗️",
-            "Others": "💸"
+            "Other": "💸"
         }
         print("Select expense category:")
         for i, (category, emoji) in enumerate(categories.items(), 1,):
-            print(f"{i}. {category} {emoji}")
+            print(f"{i}. {emoji} {category}")
 
         while True:
             try:
