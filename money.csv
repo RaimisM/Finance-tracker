@@ -13,3 +13,7 @@ ID,Date,Type,Category,Amount,Description
 20241223171849,2024-12-23 17:18:49,Income,Salary,1111.00,Side gig
 20241223172306,2024-12-23 17:23:06,Expense,Health,14.80,Drugs for knee pain
 20241223173348,2024-12-23 17:33:48,Expense,Sport,195.95,Gym
+20241227095303,2024-12-27 09:53:03,Income,Salary,650.33,From work
+20241227095934,2024-12-27 09:59:34,Expense,Comunication,8.00,Phone bill
+20241227100644,2024-12-27 10:06:44,Expense,Transport,49.99,Gas For Car
+20241227101028,2024-12-27 10:10:28,Income,Salary,1000.00,Paid For Work

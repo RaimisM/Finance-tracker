@@ -84,4 +84,4 @@ class FileManager:
 
     @staticmethod
     def get_description():
-        return input("Enter description: ").strip().capitalize()
+        return input("Enter description: ").strip().title()

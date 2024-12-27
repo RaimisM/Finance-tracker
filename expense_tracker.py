@@ -8,13 +8,13 @@ class ExpenseTracker:
     @staticmethod
     def expense_categories():
         categories = {
+            "Home": "🏠",
             "Food": "🍔",
             "Transport": "🚗",
             "Entertainment": "🎥",
             "Health": "💊",
             "Education": "📚",
             "Comunication": "📱",
-            "Home": "🏠",
             "Clothing": "👕",
             "Gifts": "🎁",
             "Travel": "🌍",
@@ -22,7 +22,6 @@ class ExpenseTracker:
             "Pets": "🐶",
             "Sport": "🏀",
             "Social": "🎉",
-            "Holidays": "🏖️",
             "Donations": "🎗️",
             "Other": "💸"
         }

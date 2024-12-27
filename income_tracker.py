@@ -8,37 +8,24 @@ class IncomeTracker:
 
     @staticmethod
     def income_categories():
-        valid_categories = ["salary", "gift", "interest", "other"]
-        print("Available income categories:", ", ".join([category.capitalize() for category in valid_categories]))
+        valid_categories = {
+        "Salary": "💼",
+        "Gift": "🎁",
+        "Interest": "💰",
+        "Other": "🔧"
+    }
+        print("Available income categories:")
+
+        for i, (category, emoji) in enumerate(valid_categories.items(), 1,):
+            print(f"{i}. {emoji} {category}")
+
         while True:
-            category = input("Select income category: ").strip().lower()
-            if category in valid_categories:
-                return category.capitalize()
-            else:
+            try:
+                choice = int(input("Enter category number: "))
+                if 1 <= choice <= len(valid_categories):
+                    return list(valid_categories.keys())[choice - 1]
+                else:
+                    print("Invalid choice. Please select a valid number.")
+            except ValueError:
                 print("Invalid category. Please try again.")
     
-
-    
-# def main():
-#     tracker = IncomeTracker()
-#     while True:
-#         category = tracker.income_categories()
-#         amount = tracker.file_manager.get_amount()
-#         description = tracker.file_manager.get_description()
-#         tracker.file_manager.add_transaction("Income", category, amount, description)
-
-#         while True:
-#             answer = input("Do you want to add another income? (yes/no): ").strip().lower()
-#             if answer in ["yes", "y"]:
-#                 break
-#             elif answer in ["no", "n"]:
-#                 print("Thank you for using the Income Tracker. Goodbye!")
-#                 return
-#             else:
-#                 print("Invalid input. Please select yes or no.")
-
-        
-# if __name__ == "__main__":
-#     main()
-
-            

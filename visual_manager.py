@@ -61,7 +61,7 @@ class VisualManager:
             for category, amount in income.items():
                 print(f"  {category}: €{amount:.2f}")
         else:
-            print("  No income recorded.")
+            print("No income recorded.")
 
         print("\nExpenses by Category:")
         if not expenses.empty:
@@ -72,7 +72,12 @@ class VisualManager:
 
         print(f"\nTotal Income: €{total_income:.2f}")
         print(f"Total Expenses: €{total_expenses:.2f}")
-        print(f"Balance: €{balance:.2f}")
+        if balance > 0:
+            print(f"Balance: €\033[92m{balance:.2f}\033[0m")
+        elif balance < 0:
+            print(f"Balance: €\033[91m{balance:.2f}\033[0m")
+        else:
+            print(f"Balance: €{balance:.2f}")
         print("\n")
 
     def show_summary(self, timeframe):
