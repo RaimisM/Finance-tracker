@@ -60,19 +60,24 @@ def add_expense(expense_tracker):
 def show_balance_and_summary(visual_manager):
     print("\nView Balance and Summary")
     while True:
-        print("1. This Month")
-        print("2. This Year")
-        print("3. All Time")
-        print("4. Back")
+        print("\nSelect a timeframe:")
+        print("1. This month")
+        print("2. This year")
+        print("3. Select a year")
+        print("4. All Time")
+        print("5. Exit")
 
-        choice = input("Select a timeframe: ").strip()
+        choice = input("Enter your choice: ").strip()
         if choice == "1":
             visual_manager.show_summary("month")
         elif choice == "2":
             visual_manager.show_summary("year")
         elif choice == "3":
-            visual_manager.show_summary("all")
+            visual_manager.show_summary("select_year")
         elif choice == "4":
+            visual_manager.show_summary("all")
+        elif choice == "5":
+            print("Exiting... Goodbye!")
             break
         else:
             print("Invalid choice. Please try again.")

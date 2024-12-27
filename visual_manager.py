@@ -26,7 +26,7 @@ class VisualManager:
             return self.data[self.data["Date"].dt.month == now.month]
         elif timeframe == "year":
             return self.data[self.data["Date"].dt.year == now.year]
-        elif timeframe == "all":
+        elif timeframe == "select_year":
             available_years = self.data["Date"].dt.year.dropna().unique()
             available_years.sort()
             print("Available years:", ", ".join(map(str, available_years)))
@@ -40,6 +40,8 @@ class VisualManager:
             except ValueError:
                 print("Invalid year selection. Please try again.")
                 return pd.DataFrame()
+        elif timeframe == "all":
+            return self.data
         else:
             print("Invalid timeframe selection.")
             return pd.DataFrame()
@@ -86,23 +88,3 @@ class VisualManager:
 
 if __name__ == "__main__":
     visual_manager = VisualManager()
-
-    while True:
-        print("\nSelect a timeframe:")
-        print("1. This month")
-        print("2. This year")
-        print("3. All time")
-        print("4. Exit")
-
-        choice = input("Enter your choice: ").strip()
-        if choice == "1":
-            visual_manager.show_summary("month")
-        elif choice == "2":
-            visual_manager.show_summary("year")
-        elif choice == "3":
-            visual_manager.show_summary("all")
-        elif choice == "4":
-            print("Exiting...")
-            break
-        else:
-            print("Invalid choice. Please try again.")

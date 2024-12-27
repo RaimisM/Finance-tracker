@@ -40,9 +40,3 @@ class ExpenseTracker:
                 print("Invalid category. Please try again.")
 
    
-def add_expense(self):
-        category = self.expense_categories()
-        amount = self.file_manager.get_amount()
-        description = self.file_manager.get_description()
-        self.file_manager.add_transaction("Expense", category, amount, description)
-        print("Expense added successfully!")

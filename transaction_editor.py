@@ -10,13 +10,23 @@ class TransactionManager:
         if not data:
             print("No transactions available to edit.")
             return
+        
+        print("\nList of transactions:")
+        for item in data:
+            print(f"ID: {item['ID']}")
 
-        transaction_id = input("Enter the ID of the record you want to edit: ").strip()
-        transaction = next((item for item in data if item["ID"] == transaction_id), None)
+        while True:
+            transaction_id = input("Enter the ID of the record you want to edit (or type 'x' to return): ").strip().lower()
+            if transaction_id == "x":
+                print("Returning to the Edit Transactions menu.")
+                return
+            transaction = next((item for item in data if item["ID"] == transaction_id), None)
 
-        if not transaction:
-            print("Record not found.")
-            return
+            if transaction:
+                break
+            else:
+                print("Record not found. Please check the ID and try again (or type 'x' to return)")
+            
         original_transaction = transaction.copy()
 
         print("\nTransaction details:")
@@ -26,7 +36,7 @@ class TransactionManager:
 
         while True:
             new_date = input(
-                f"Enter new date in YYYY-MM-DD format (leave blank to keep current: {transaction['Date']}): "
+                f"Enter new date in YYYY-MM-DD format (leave blank to keep current: {transaction['Date'].split()[0]}): "
             ).strip()
             if not new_date:
                 break
@@ -55,7 +65,7 @@ class TransactionManager:
         if transaction["Type"] == "Income":
             print("Available income categories: Salary, Gift, Interest, Other")
         else:
-            print("Available expense categories: Food, Transport, Entertainment, Health, Education, Communication, Home, Clothing, Gifts, Travel, Beauty, Pets, Sport, Social, Holidays, Donations, Other")
+            print("Available expense categories: Home, Food, Transport, Entertainment, Health, Education, Communication, Clothing, Gifts, Travel, Beauty, Pets, Sport, Social, Donations, Other")
 
         while True:
             new_category = input(f"Enter new category (leave blank to keep current: {transaction['Category']}): ").strip()
@@ -66,8 +76,8 @@ class TransactionManager:
                 transaction["Category"] = new_category.capitalize()
                 break
             elif transaction["Type"] == "Expense" and new_category.capitalize() in [
-                "Food", "Transport", "Entertainment", "Health", "Education", "Communication", "Home", "Clothing", "Gifts",
-                "Travel", "Beauty", "Pets", "Sport", "Social", "Holidays", "Donations", "Other"
+                "Home", "Food", "Transport", "Entertainment", "Health", "Education", "Communication", "Clothing", "Gifts",
+                "Travel", "Beauty", "Pets", "Sport", "Social", "Donations", "Other"
             ]:
                 transaction["Category"] = new_category.capitalize()
                 break
@@ -100,12 +110,18 @@ class TransactionManager:
             else:
                 print(f"\t{key}: {value}")
 
-
-        if input("Do you want to save changes? (yes/no): ").strip().lower() in ["yes", "y"]:
+        while True:
+            save_edit = input("Do you want to save changes? (yes/no): ").strip().lower()
+            if save_edit in ["yes", "y", "no", "n"]:
+                break
+            else:
+                print("Invalid input. Please type 'yes' or 'no'")
+        
+        if save_edit in ["yes", "y"]:
             self.file_manager.save_data(data)
             print("Record updated successfully.")
         else:
-            print("Changes not saved.")
+            print("Record not updated.")
 
 
 
@@ -116,18 +132,34 @@ class TransactionManager:
             print("No transactions available to delete.")
             return
 
-        transaction_id = input("Enter the ID of the record you want to delete: ").strip()
-        transaction = next((item for item in data if item["ID"] == transaction_id), None)
+        print("\nList of transactions:")
+        for item in data:
+            print(f"ID: {item['ID']}")
 
-        if not transaction:
-            print("Record not found.")
-            return
+        while True:
+            transaction_id = input("Enter the ID of the record you want to delete (or type 'x' to return): ").strip()
+            if transaction_id == "x":
+                print("Returning to the Edit Transactions menu.")
+                return
+            transaction = next((item for item in data if item["ID"] == transaction_id), None)
+
+            if transaction:
+                break
+            else:
+                print("Record not found. Please check the ID and try again (or type 'x' to return)")
 
         print("\nTransaction details:")
         for key, value in transaction.items():
             print(f"\t{key}: {value}")
 
-        if input("Do you want to delete this record? (yes/no): ").strip().lower() in ["yes", "y"]:
+        while True:
+            delete_check = input("Do you want to delete this record? (yes/no): ").strip().lower()
+            if delete_check in ["yes", "y", "no", "n"]:
+                break
+            else:
+                print("Invalid input. Please type 'yes' or 'no'")
+
+        if delete_check in ["yes", "y"]:
             data.remove(transaction)
             self.file_manager.save_data(data)
             print("Record deleted successfully.")
@@ -146,28 +178,3 @@ class TransactionManager:
 
         for item in sorted_data:
             print(f"{item['ID']:<20}{item['Date']:<30}{item['Type']:<15}{item['Category']:<15}{item['Amount']:<15}{item['Description']}")
-
-def main():
-    manager = TransactionManager()
-    while True:
-        print("\nOptions:")
-        print("1. View transactions")
-        print("2. Edit a transaction")
-        print("3. Remove a transaction")
-        print("4. Exit")
-        choice = input("Enter your choice: ").strip()
-
-        if choice == "1":
-            manager.display_data()
-        elif choice == "2":
-            manager.edit_data()
-        elif choice == "3":
-            manager.delete_data()
-        elif choice == "4":
-            print("Exiting the program...")
-            break
-        else:
-            print("Invalid choice. Please try again.")
-
-if __name__ == "__main__":
-    main()
