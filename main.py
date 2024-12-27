@@ -2,12 +2,14 @@ from income_tracker import IncomeTracker
 from expense_tracker import ExpenseTracker
 from transaction_editor import TransactionManager
 from visual_manager import VisualManager
+from file_manager import FileManager
 
 def main():
     income_tracker = IncomeTracker()
     expense_tracker = ExpenseTracker()
     transaction_manager = TransactionManager()
     visual_manager = VisualManager()
+    file_manager = FileManager("money.csv")
 
     while True:
         print("\nPersonal Finance Tracker")
@@ -20,9 +22,9 @@ def main():
         choice = input("Enter your choice: ").strip()
 
         if choice == "1":
-            add_income(income_tracker)
+            add_income(income_tracker, file_manager)
         elif choice == "2":
-            add_expense(expense_tracker)
+            add_expense(expense_tracker, file_manager)
         elif choice == "3":
             show_balance_and_summary(visual_manager)
         elif choice == "4":
@@ -33,39 +35,67 @@ def main():
         else:
             print("Invalid choice. Please try again.")
 
-def add_income(income_tracker):
+def add_income(income_tracker, file_manager):
     print("\nAdd Income")
     while True:
-        category = income_tracker.income_categories()
-        amount = income_tracker.file_manager.get_amount()
-        description = income_tracker.file_manager.get_description()
-        income_tracker.file_manager.add_transaction("Income", category, amount, description)
+        try:
+            category = income_tracker.income_categories()
+            amount = income_tracker.file_manager.get_amount()
+            description = income_tracker.file_manager.get_description()
+            
+            if confirm_transaction("Income", category, amount, description, file_manager):
+                print("Income added successfully! ✅")
+        except ValueError as e:
+            print(f"Error: {e}")
 
         another = input("Do you want to add another income? (yes/no): ").strip().lower()
         if another not in ["yes", "y"]:
             break
 
-def add_expense(expense_tracker):
+def add_expense(expense_tracker, file_manager):
     print("\nAdd Expense")
     while True:
-        category = expense_tracker.expense_categories()
-        amount = expense_tracker.file_manager.get_amount()
-        description = expense_tracker.file_manager.get_description()
-        expense_tracker.file_manager.add_transaction("Expense", category, amount, description)
+        try:
+            category = expense_tracker.expense_categories()
+            amount = expense_tracker.file_manager.get_amount()
+            description = expense_tracker.file_manager.get_description()
+
+            if confirm_transaction("Expense", category, amount, description, file_manager):
+                print("Expense added successfully! ✅")
+        except ValueError as e:
+            print(f"Error: {e}")
 
         another = input("Do you want to add another expense? (yes/no): ").strip().lower()
         if another not in ["yes", "y"]:
             break
 
+def confirm_transaction(transaction_type, category, amount, description, file_manager):
+    print("\nPlease confirm the details:")
+    print(f"\tType: {transaction_type}")
+    print(f"\tCategory: {category}")
+    print(f"\tAmount: €{amount:.2f}")
+    print(f"\tDescription: {description}")
+
+    while True:
+        confirm = input("Do you want to add this transaction? (yes/no): ").strip().lower()
+        if confirm in ["yes", "y"]:
+            file_manager.add_transaction(transaction_type, category, amount, description)
+            return True
+        elif confirm in ["no", "n"]:
+            print(f"{transaction_type} not added. ⛔")
+            return False
+        else:
+            print("Invalid input. Please type 'yes' or 'no'")
+
 def show_balance_and_summary(visual_manager):
     print("\nView Balance and Summary")
     while True:
-        print("\nSelect a timeframe:")
+        print("Select a timeframe:")
         print("1. This month")
         print("2. This year")
-        print("3. Select a year")
+        print("3. Custom date")
         print("4. All Time")
-        print("5. Exit")
+        print("5. Back")
 
         choice = input("Enter your choice: ").strip()
         if choice == "1":
@@ -73,11 +103,10 @@ def show_balance_and_summary(visual_manager):
         elif choice == "2":
             visual_manager.show_summary("year")
         elif choice == "3":
-            visual_manager.show_summary("select_year")
+            visual_manager.show_summary("custom_date")
         elif choice == "4":
             visual_manager.show_summary("all")
         elif choice == "5":
-            print("Exiting... Goodbye!")
             break
         else:
             print("Invalid choice. Please try again.")

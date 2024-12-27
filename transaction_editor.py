@@ -35,9 +35,7 @@ class TransactionManager:
 
 
         while True:
-            new_date = input(
-                f"Enter new date in YYYY-MM-DD format (leave blank to keep current: {transaction['Date'].split()[0]}): "
-            ).strip()
+            new_date = input(f"Enter new date in YYYY-MM-DD format (leave blank to keep current: {transaction['Date'].split()[0]}): ").strip()
             if not new_date:
                 break
             try:

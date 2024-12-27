@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import datetime
+import calendar
 
 class VisualManager:
     def __init__(self, filename="money.csv"):
@@ -26,30 +27,62 @@ class VisualManager:
             return self.data[self.data["Date"].dt.month == now.month]
         elif timeframe == "year":
             return self.data[self.data["Date"].dt.year == now.year]
-        elif timeframe == "select_year":
+        elif timeframe == "custom_date":
             available_years = self.data["Date"].dt.year.dropna().unique()
             available_years.sort()
-            print("Available years:", ", ".join(map(str, available_years)))
-            try:
-                selected_year = int(input("Enter the year: ").strip())
-                if selected_year in available_years:
-                    return self.data[self.data["Date"].dt.year == selected_year]
-                else:
-                    print(f"Year {selected_year} is not available.")
-                    return pd.DataFrame()
-            except ValueError:
-                print("Invalid year selection. Please try again.")
-                return pd.DataFrame()
+            print("Available years:")
+            for year in available_years:
+                print(f"\t{year}")
+            
+            while True:
+                try:
+                    selected_year = int(input("Enter the year: ").strip())
+                    if selected_year not in available_years:
+                        print(f"Year {selected_year} is not available. Please select a valid year.")
+                    else:
+                        break
+                except ValueError:
+                    print("Invalid year. Please try again.")
+
+            available_months = self.data[self.data["Date"].dt.year == selected_year]["Date"].dt.month.dropna().unique()
+            available_months.sort()
+            month_names = [calendar.month_name[month] for month in available_months]
+            month_names.append("Full Year")
+
+            print("Available months:")
+            for month in month_names:
+                print(f"\t{month}")
+
+            while True:
+                try:
+                    selected_month = input("Enter the month (e.g., January or Full Year): ").strip().title()
+                    if selected_month == "Full Year":
+                        return self.data[self.data["Date"].dt.year == selected_year], None, selected_year
+                    elif selected_month not in month_names:
+                        print(f"Month {selected_month} is not available for year {selected_year}. Please select a valid month.")
+                    else:
+                        selected_month = list(calendar.month_name).index(selected_month)
+                        return self.data[(self.data["Date"].dt.year == selected_year) & (self.data["Date"].dt.month == selected_month)], calendar.month_name[selected_month], selected_year
+                except ValueError:
+                    print("Invalid selection. Please try again.")
+        
         elif timeframe == "all":
             return self.data
         else:
             print("Invalid timeframe selection.")
             return pd.DataFrame()
 
-    def summarize_data(self, data):
+    def summarize_data(self, data, month=None, year=None):
         if data.empty:
             print("No transactions available.")
             return
+        
+        if month and year:
+            print(f"\nSummary for {month} {year}:")
+        elif month:
+            print(f"\nSummary for {month}:")
+        elif year:
+            print(f"\nSummary for {year}:")
         
         income = data[data["Type"] == "Income"].groupby("Category")["Amount"].sum()
         expenses = data[data["Type"] == "Expense"].groupby("Category")["Amount"].sum()
@@ -57,7 +90,6 @@ class VisualManager:
         total_expenses = expenses.sum()
         balance = total_income - total_expenses
 
-        print("\nSummary:")
         print("\nIncome by Category:")
         if not income.empty:
             for category, amount in income.items():
@@ -70,7 +102,7 @@ class VisualManager:
             for category, amount in expenses.items():
                 print(f"  {category}: €{amount:.2f}")
         else:
-            print("  No expenses recorded.")
+            print("No expenses recorded.")
 
         print(f"\nTotal Income: €{total_income:.2f}")
         print(f"Total Expenses: €{total_expenses:.2f}")
@@ -83,8 +115,10 @@ class VisualManager:
         print("\n")
 
     def show_summary(self, timeframe):
-        filtered_data = self.filter_data(timeframe)
-        self.summarize_data(filtered_data)
+        if timeframe == "custom_date":
+            filtered_data, selected_month, selected_year = self.filter_data(timeframe)
+            self.summarize_data(filtered_data, selected_month, selected_year)
+        else:
+            filtered_data = self.filter_data(timeframe)
+            self.summarize_data(filtered_data)
 
-if __name__ == "__main__":
-    visual_manager = VisualManager()
