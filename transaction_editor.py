@@ -10,7 +10,6 @@ class TransactionManager:
         if not data:
             print("No transactions available to edit.")
             return
-        
         print("\nList of transactions:")
         for item in data:
             print(f"ID: {item['ID']}")
@@ -28,7 +27,6 @@ class TransactionManager:
                 print("Record not found. Please check the ID and try again (or type 'x' to return)")
             
         original_transaction = transaction.copy()
-
         print("\nTransaction details:")
         for key, value in transaction.items():
             print(f"\t{key}: {value}")
@@ -39,48 +37,45 @@ class TransactionManager:
             if not new_date:
                 break
             try:
-                new_year, new_month, new_day = map(int, new_date.split("-"))
-                if new_year < 2000:
+                edited_date = datetime.strptime(new_date, "%Y-%m-%d")
+                if edited_date.year < 2000:
                     print("Year cannot be earlier than 2000. Please try again.")
-                elif 1 <= new_month <= 12 and 1 <= new_day <= 31:
-                    transaction["Date"] = f"{new_year:04d}-{new_month:02d}-{new_day:02d} {transaction['Date'].split(' ')[1]}"
-                    break
+                elif edited_date > datetime.now():
+                    print("Date cannot be in the future. Please try again.")
                 else:
-                    print("Invalid month or day. Please try again.")
+                    transaction["Date"] = f"{edited_date.strftime('%Y-%m-%d')} {transaction['Date'].split()[1]}"
+                    break
             except ValueError:
                 print("Invalid date format. Please try again.")
 
+
         while True:
-            new_type = input(f"Enter new type (Income/Expense, leave blank to keep current: {transaction['Type']}): ").strip()
+            new_type = input(f"Enter new type (Income/Expense, leave blank to keep current: {transaction['Type']}): ").strip().lower()
             if not new_type:
                 break
-            if new_type in ["Income", "Expense"]:
-                transaction["Type"] = new_type
+            if new_type in ["income", "expense"]:
+                transaction["Type"] = new_type.capitalize()
                 break
             else:
                 print("Invalid type. Please enter 'Income' or 'Expense'.")
 
         if transaction["Type"] == "Income":
-            print("Available income categories: Salary, Gift, Interest, Other")
+            valid_categories = ["Salary", "Gift", "Interest", "Other"]
         else:
-            print("Available expense categories: Home, Food, Transport, Entertainment, Health, Education, Communication, Clothing, Gifts, Travel, Beauty, Pets, Sport, Social, Donations, Other")
+            valid_categories = ["Home", "Food", "Transport", "Entertainment", "Health", "Education", "Communication", "Clothing", "Gifts", "Travel", "Beauty", "Pets", "Sport", "Social", "Donations", "Other"]
+
 
         while True:
-            new_category = input(f"Enter new category (leave blank to keep current: {transaction['Category']}): ").strip()
+            print(f"Available categories for {transaction['Type']}: {', '.join(valid_categories)}")
+            new_category = input(f"Enter new category (leave blank to keep current: {transaction['Category']}): ").strip().capitalize()
             if not new_category:
                 break
-
-            if transaction["Type"] == "Income" and new_category.capitalize() in ["Salary", "Gift", "Interest", "Other"]:
-                transaction["Category"] = new_category.capitalize()
-                break
-            elif transaction["Type"] == "Expense" and new_category.capitalize() in [
-                "Home", "Food", "Transport", "Entertainment", "Health", "Education", "Communication", "Clothing", "Gifts",
-                "Travel", "Beauty", "Pets", "Sport", "Social", "Donations", "Other"
-            ]:
-                transaction["Category"] = new_category.capitalize()
+            if new_category in valid_categories:
+                transaction["Category"] = new_category
                 break
             else:
                 print("Invalid category. Please try again.")
+
 
         while True:
             new_amount = input(f"Enter new amount (leave blank to keep current: {transaction['Amount']}): ").strip()
@@ -99,12 +94,12 @@ class TransactionManager:
 
         new_description = input(f"Enter new description (leave blank to keep current: {transaction['Description']}): ").strip()
         if new_description:
-            transaction["Description"] = new_description
+            transaction["Description"] = new_description.title()
 
         print("\nUpdated transaction details:")
         for key, value in transaction.items():
             if value != original_transaction[key]:
-                print(f"\t\033[33m{key}: {value} (Changed)\033[0m")
+                print(f"\t\033[33m{key}: {value} (Changed from: {original_transaction[key]})\033[0m")
             else:
                 print(f"\t{key}: {value}")
 
@@ -120,8 +115,6 @@ class TransactionManager:
             print("Record updated successfully.")
         else:
             print("Record not updated.")
-
-
 
 
     def delete_data(self):
@@ -160,9 +153,10 @@ class TransactionManager:
         if delete_check in ["yes", "y"]:
             data.remove(transaction)
             self.file_manager.save_data(data)
-            print("Record deleted successfully.")
+            print("Record deleted successfully. ✅")
         else:
-            print("Record not deleted.")
+            print("Record not deleted. ⛔")
+
 
     def display_data(self):
         data = self.file_manager.load_data()

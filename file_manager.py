@@ -58,28 +58,7 @@ class FileManager:
         except Exception as e:
             print(f"An error occurred: {e}")
 
-        #     print("\nPlease confirm the details:")
-        #     for key, value in entry.items():
-        #         print(f"\t{key}: {value}")
-
-        #     while True:
-        #         confirm = input("Do you want to add this transaction? (yes/no): ").strip().lower()
-        #         if confirm in ["yes", "y"]:
-        #             data = self.load_data()
-        #             data.append(entry)
-        #             self.save_data(data)
-        #             print(f"{transaction_type} added successfully! ✅")
-        #             return
-        #         elif confirm in ["no", "n"]:
-        #             print(f"{transaction_type} not added. ⛔")
-        #             return
-        #         else:
-        #             print("Invalid input. Please type 'yes' or 'no'")
-
-        # except Exception as e:
-        #     print(f"An error occurred: {e}")
-
-    
+   
     @staticmethod
     def get_amount():
         while True:
@@ -91,6 +70,7 @@ class FileManager:
                     print("Amount must be greater than zero. Please try again.")
             except ValueError:
                 print("Invalid amount. Please try again.")
+                
 
     @staticmethod
     def get_description():

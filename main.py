@@ -40,34 +40,44 @@ def add_income(income_tracker, file_manager):
     while True:
         try:
             category = income_tracker.income_categories()
-            amount = income_tracker.file_manager.get_amount()
-            description = income_tracker.file_manager.get_description()
+            amount = file_manager.get_amount()
+            description = file_manager.get_description()
             
             if confirm_transaction("Income", category, amount, description, file_manager):
                 print("Income added successfully! ✅")
         except ValueError as e:
             print(f"Error: {e}")
 
-        another = input("Do you want to add another income? (yes/no): ").strip().lower()
-        if another not in ["yes", "y"]:
-            break
+        while True:
+            another = input("Do you want to add another income? (yes/no): ").strip().lower()
+            if another in ["yes", "y"]:
+                break
+            elif another in ["no", "n"]:
+                return
+            else:
+                print("Invalid input. Please type 'yes' or 'no'")
 
 def add_expense(expense_tracker, file_manager):
     print("\nAdd Expense")
     while True:
         try:
             category = expense_tracker.expense_categories()
-            amount = expense_tracker.file_manager.get_amount()
-            description = expense_tracker.file_manager.get_description()
+            amount = file_manager.get_amount()
+            description = file_manager.get_description()
 
             if confirm_transaction("Expense", category, amount, description, file_manager):
                 print("Expense added successfully! ✅")
         except ValueError as e:
             print(f"Error: {e}")
 
-        another = input("Do you want to add another expense? (yes/no): ").strip().lower()
-        if another not in ["yes", "y"]:
-            break
+        while True:
+            another = input("Do you want to add another expense? (yes/no): ").strip().lower()
+            if another in ["yes", "y"]:
+                break
+            elif another in ["no", "n"]:
+                return
+            else:
+                print("Invalid input. Please type 'yes' or 'no'")
 
 def confirm_transaction(transaction_type, category, amount, description, file_manager):
     print("\nPlease confirm the details:")

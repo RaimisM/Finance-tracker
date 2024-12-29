@@ -1,27 +1,40 @@
 import pandas as pd
 from datetime import datetime
+import os
 import calendar
 
 class VisualManager:
     def __init__(self, filename="money.csv"):
         self.filename = filename
+        self.last_modified_time = None
+        self.data = self.load_data()
+    
+    def get_file_modification_time(self):
         try:
-            self.data = self.load_data()
-            if not self.data.empty:
-                self.data["Date"] = pd.to_datetime(self.data["Date"], errors='coerce')
-                self.data["Amount"] = pd.to_numeric(self.data["Amount"], errors='coerce')
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            self.data = pd.DataFrame()
+            return os.path.getmtime(self.filename)
+        except FileNotFoundError:
+            print(f"File not found: {self.filename}")
+            return None
 
     def load_data(self):
         try:
-            return pd.read_csv(self.filename)
+            data = pd.read_csv(self.filename)
+            data["Date"] = pd.to_datetime(data["Date"], errors='coerce')
+            data["Amount"] = pd.to_numeric(data["Amount"], errors='coerce')
+            self.last_modified_time = self.get_file_modification_time()
+            return data
         except FileNotFoundError:
             print(f"File not found: {self.filename}")
             return pd.DataFrame()
 
+    def check_and_reload_data(self):
+        current_modified_time = self.get_file_modification_time()
+        if current_modified_time != self.last_modified_time:
+            self.data = self.load_data()
+
     def filter_data(self, timeframe):
+        self.check_and_reload_data()
+
         now = datetime.now()
         if timeframe == "month":
             return self.data[self.data["Date"].dt.month == now.month]
@@ -121,4 +134,3 @@ class VisualManager:
         else:
             filtered_data = self.filter_data(timeframe)
             self.summarize_data(filtered_data)
-

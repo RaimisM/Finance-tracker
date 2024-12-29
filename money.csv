@@ -17,7 +17,6 @@ ID,Date,Type,Category,Amount,Description
 20241227095934,2024-12-27 09:59:34,Expense,Comunication,8.00,Phone bill
 20241227100644,2011-11-11 10:06:44,Expense,Transport,49.99,Gas For Car
 20241227121158,2024-12-27 12:11:58,Expense,Pets,14.52,Dog Food
-20241117162737,2024-1-17 16:27:37,Income,Other,25.00,Found Money On The Ground
 20241117162858,2024-11-17 16:28:58,Expense,Social,31.92,Bar
 20241227165339,2024-12-27 16:53:39,Income,Interest,0.95,Dividents
 20241227170934,2024-12-27 17:09:34,Expense,Donations,10.00,Red Cross
@@ -26,3 +25,9 @@ ID,Date,Type,Category,Amount,Description
 20241227182853,2024-12-27 18:28:53,Income,Gift,3.50,Lucky
 20241227183513,2024-12-27 18:35:13,Expense,Beauty,35.00,Nails
 20241227183551,2024-12-27 18:35:51,Income,Other,100.00,Bribe
+20241229160023,2024-12-29 16:00:23,Income,Salary,100.00,Test
+20241229160826,2024-12-29 16:08:26,Expense,Travel,3000.00,Holiday In Egypt
+20241229161758,2024-12-29 16:17:58,Expense,Donations,2000.00,Given Everything Away
+20241229174832,2024-12-29 17:48:32,Expense,Transport,50.00,Gas
+20241229180030,2024-12-29 18:00:30,Expense,Education,500.00,University Payment
+20241229184225,2024-12-29 18:42:25,Expense,Health,1000.00,Changing
