@@ -31,7 +31,6 @@ class TransactionManager:
         for key, value in transaction.items():
             print(f"\t{key}: {value}")
 
-
         while True:
             new_date = input(f"Enter new date in YYYY-MM-DD format (leave blank to keep current: {transaction['Date'].split()[0]}): ").strip()
             if not new_date:
@@ -48,7 +47,6 @@ class TransactionManager:
             except ValueError:
                 print("Invalid date format. Please try again.")
 
-
         while True:
             new_type = input(f"Enter new type (Income/Expense, leave blank to keep current: {transaction['Type']}): ").strip().lower()
             if not new_type:
@@ -64,7 +62,6 @@ class TransactionManager:
         else:
             valid_categories = ["Home", "Food", "Transport", "Entertainment", "Health", "Education", "Communication", "Clothing", "Gifts", "Travel", "Beauty", "Pets", "Sport", "Social", "Donations", "Other"]
 
-
         while True:
             print(f"Available categories for {transaction['Type']}: {', '.join(valid_categories)}")
             new_category = input(f"Enter new category (leave blank to keep current: {transaction['Category']}): ").strip().capitalize()
@@ -75,7 +72,6 @@ class TransactionManager:
                 break
             else:
                 print("Invalid category. Please try again.")
-
 
         while True:
             new_amount = input(f"Enter new amount (leave blank to keep current: {transaction['Amount']}): ").strip()
@@ -90,7 +86,6 @@ class TransactionManager:
                     break
             except ValueError:
                 print("Invalid amount. Please enter a valid number.")
-
 
         new_description = input(f"Enter new description (leave blank to keep current: {transaction['Description']}): ").strip()
         if new_description:
@@ -120,7 +115,6 @@ class TransactionManager:
             print("Returning to the Edit Transactions menu.")
             print("\n")
 
-
     def delete_data(self):
         data = self.file_manager.load_data()
         if not data:
@@ -138,7 +132,6 @@ class TransactionManager:
                 print("\n")
                 return
             transaction = next((item for item in data if item["ID"] == transaction_id), None)
-
             if transaction:
                 break
             else:
@@ -162,16 +155,13 @@ class TransactionManager:
         else:
             print("Record not deleted. ⛔")
 
-
     def display_data(self):
         data = self.file_manager.load_data()
         if not data:
             print("No transactions available.")
             return
-
         sorted_data = sorted(data, key=lambda x: datetime.strptime(x["Date"], "%Y-%m-%d %H:%M:%S"))
         print(f"{'ID':<20}{'Date':<30}{'Type':<15}{'Category':<15}{'Amount':<15}{'Description'}")
         print("-" * 110)
-
         for item in sorted_data:
             print(f"{item['ID']:<20}{item['Date']:<30}{item['Type']:<15}{item['Category']:<15}{item['Amount']:<15}{item['Description']}")

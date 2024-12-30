@@ -5,7 +5,6 @@ class IncomeTracker:
         self.file_manager = FileManager(filename)
         self.file_manager.create_file(["ID", "Date", "Type", "Category", "Amount", "Description"])
 
-
     @staticmethod
     def income_categories():
         valid_categories = {
@@ -15,7 +14,6 @@ class IncomeTracker:
         "Other": "🔧"
     }
         print("Available income categories:")
-
         for i, (category, emoji) in enumerate(valid_categories.items(), 1,):
             print(f"{i}. {emoji} {category}")
 

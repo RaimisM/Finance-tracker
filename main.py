@@ -4,6 +4,7 @@ from transaction_editor import TransactionManager
 from visual_manager import VisualManager
 from file_manager import FileManager
 
+
 def main():
     income_tracker = IncomeTracker()
     expense_tracker = ExpenseTracker()
@@ -20,7 +21,6 @@ def main():
         print("5. Exit")
 
         choice = input("Enter your choice: ").strip()
-
         if choice == "1":
             add_income(income_tracker, file_manager)
         elif choice == "2":

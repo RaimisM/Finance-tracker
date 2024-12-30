@@ -34,7 +34,6 @@ class VisualManager:
 
     def filter_data(self, timeframe):
         self.check_and_reload_data()
-
         now = datetime.now()
         if timeframe == "month":
             return self.data[self.data["Date"].dt.month == now.month]
@@ -51,17 +50,16 @@ class VisualManager:
                 try:
                     selected_year = int(input("Enter the year: ").strip())
                     if selected_year not in available_years:
-                        print(f"Year {selected_year} is not available. Please select a valid year.")
+                        print(f"Year {selected_year} is not available. Please select a valid year from above. 🢁")
                     else:
                         break
                 except ValueError:
-                    print("Invalid year. Please see the available years above. 🢁")
+                    print("Invalid year. Please see the available year above. 🢁")
 
             available_months = self.data[self.data["Date"].dt.year == selected_year]["Date"].dt.month.dropna().unique()
             available_months.sort()
             month_names = [calendar.month_name[month] for month in available_months]
             month_names.append("Full Year")
-
             print("Available months:")
             for month in month_names:
                 print(f"\t{month}")
@@ -106,14 +104,14 @@ class VisualManager:
         print("\nIncome by Category:")
         if not income.empty:
             for category, amount in income.items():
-                print(f"  {category}: €{amount:.2f}")
+                print(f"{category}: €{amount:.2f}")
         else:
             print("No income recorded.")
 
         print("\nExpenses by Category:")
         if not expenses.empty:
             for category, amount in expenses.items():
-                print(f"  {category}: €{amount:.2f}")
+                print(f"{category}: €{amount:.2f}")
         else:
             print("No expenses recorded.")
 
