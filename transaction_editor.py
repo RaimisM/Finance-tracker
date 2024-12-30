@@ -112,9 +112,13 @@ class TransactionManager:
         
         if save_edit in ["yes", "y"]:
             self.file_manager.save_data(data)
-            print("Record updated successfully.")
+            print("Record updated successfully. ✅")
+            print("Returning to the Edit Transactions menu.")
+            print("\n")
         else:
-            print("Record not updated.")
+            print("Record not updated. ⛔")
+            print("Returning to the Edit Transactions menu.")
+            print("\n")
 
 
     def delete_data(self):
@@ -131,6 +135,7 @@ class TransactionManager:
             transaction_id = input("Enter the ID of the record you want to delete (or type 'x' to return): ").strip()
             if transaction_id == "x":
                 print("Returning to the Edit Transactions menu.")
+                print("\n")
                 return
             transaction = next((item for item in data if item["ID"] == transaction_id), None)
 

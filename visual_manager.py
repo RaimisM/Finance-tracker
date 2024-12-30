@@ -55,7 +55,7 @@ class VisualManager:
                     else:
                         break
                 except ValueError:
-                    print("Invalid year. Please try again.")
+                    print("Invalid year. Please see the available years above. 🢁")
 
             available_months = self.data[self.data["Date"].dt.year == selected_year]["Date"].dt.month.dropna().unique()
             available_months.sort()
