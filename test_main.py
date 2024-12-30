@@ -15,7 +15,6 @@ def test_add_income():
     file_manager = FileManager("test_money.csv")
     file_manager.add_transaction("Income", "Salary", 1000.0, "Monthly Salary")
     data = file_manager.load_data()
-    
     assert len(data) == 1
     assert data[0]["Type"] == "Income"
     assert data[0]["Category"] == "Salary"
@@ -25,7 +24,6 @@ def test_add_expense():
     file_manager = FileManager("test_money.csv")
     file_manager.add_transaction("Expense", "Groceries", 50.0, "Weekly Groceries")
     data = file_manager.load_data()
-
     assert len(data) == 1
     assert data[0]["Type"] == "Expense"
     assert data[0]["Category"] == "Groceries"

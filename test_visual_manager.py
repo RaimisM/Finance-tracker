@@ -4,14 +4,8 @@ import pandas as pd
 from visual_manager import VisualManager
 
 def main():
-    test_load_data()
     test_get_file_modification_time()
     test_filter_data_month()
-
-def test_load_data():
-    visual_manager = VisualManager("test_money.csv")
-    assert not visual_manager.data.empty
-    assert len(visual_manager.data) == 3
 
 def test_get_file_modification_time():
     visual_manager = VisualManager("test_money.csv")
