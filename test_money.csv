@@ -1,2 +1,4 @@
 ID,Date,Type,Category,Amount,Description
-20241230114328,2024-12-30 11:43:28,Expense,Groceries,50.00,Weekly Groceries
+1,2024-12-01,Income,Salary,1000.0,Monthly Salary
+2,2024-12-15,Expense,Groceries,50.0,Weekly Groceries
+3,2024-11-20,Income,Freelance,200.0,Freelance work
